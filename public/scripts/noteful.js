@@ -1,4 +1,4 @@
-/* global $ store api moment */
+/* global $ store api moment*/
 'use strict';
 
 const noteful = (function () {
@@ -22,7 +22,7 @@ const noteful = (function () {
     const editForm = $('.js-note-edit-form');
     editForm.find('.js-note-title-entry').val(store.currentNote.title);
     editForm.find('.js-note-content-entry').val(store.currentNote.content);
-    editForm.find('.js-note-folder-entry').val(store.currentNote.folderId);
+    editForm.find('.js-note-folder-entry').val(store.currentNote.folder_id);
 
     editForm.find('.js-note-tags-entry').val(() => {
       if (store.currentNote.tags) {
@@ -45,6 +45,8 @@ const noteful = (function () {
           </div>
       </li>`);
     return listItems.join('');
+
+    
   }
 
   function generateFolderList(list, currQuery) {
@@ -149,7 +151,7 @@ const noteful = (function () {
         id: store.currentNote.id,
         title: editForm.find('.js-note-title-entry').val(),
         content: editForm.find('.js-note-content-entry').val(),
-        folderId: editForm.find('.js-note-folder-entry').val(),
+        folder_id: editForm.find('.js-note-folder-entry').val(),
         tags: editForm.find('.js-note-tags-entry').val()
       };
 
@@ -213,10 +215,11 @@ const noteful = (function () {
 
       const folderId = getFolderIdFromElement(event.currentTarget);
       store.currentQuery.folderId = folderId;
-      if (folderId !== store.currentNote.folderId) {
+      if (folderId !== store.currentNote.folder_id) {
         store.currentNote = {};
       }
 
+      console.log('Get notes by folderId, coming soon...');
       api.search('/api/notes', store.currentQuery)
         .then(response => {
           store.notes = response;
@@ -230,6 +233,8 @@ const noteful = (function () {
       event.preventDefault();
 
       const newFolderName = $('.js-new-folder-entry').val();
+
+      console.log('Create a folder, coming soon...');
       api.create('/api/folders', { name: newFolderName })
         .then(() => {
           $('.js-new-folder-entry').val();
@@ -251,19 +256,17 @@ const noteful = (function () {
       if (folderId === store.currentQuery.folderId) {
         store.currentQuery.folderId = null;
       }
-      if (folderId === store.currentNote.folderId) {
+      if (folderId === store.currentNote.folder_id) {
         store.currentNote = {};
       }
-
+      
+      console.log('Delete a folder, coming soon...');
       api.remove(`/api/folders/${folderId}`)
         .then(() => {
-          const notesPromise = api.search('/api/notes');
-          const folderPromise = api.search('/api/folders');
-          return Promise.all([notesPromise, folderPromise]);
+          return api.search('/api/folders');
         })
-        .then( ([notes, folders])  => {
-          store.notes = notes;
-          store.folders = folders;
+        .then(response => {
+          store.folders = response;
           render();
         });
     });
@@ -279,14 +282,14 @@ const noteful = (function () {
       const tagId = getTagIdFromElement(event.currentTarget);
       store.currentQuery.tagId = tagId;
 
-      //TODO; loop over tags, if not a match, then clear
       store.currentNote = {};
 
-      api.search('/api/notes', store.currentQuery)
-        .then(response => {
-          store.notes = response;
-          render();
-        });
+      console.log('Get notes by tagId, coming soon...');
+      // api.search('/api/notes', store.currentQuery)
+      //   .then(response => {
+      //     store.notes = response;
+      //     render();
+      //   });
     });
   }
 
@@ -295,16 +298,18 @@ const noteful = (function () {
       event.preventDefault();
 
       const newTagName = $('.js-new-tag-entry').val();
-      api.create('/api/tags', { name: newTagName })
-        .then(() => {
-          return api.search('/api/tags');
-        }).then(response => {
-          store.tags = response;
-          render();
-        })
-        .catch(err => {
-          console.error(err);
-        });
+
+      console.log('Create a tag, coming soon...');
+      // api.create('/api/tags', { name: newTagName })
+      //   .then(() => {
+      //     return api.search('/api/tags');
+      //   }).then(response => {
+      //     store.tags = response;
+      //     render();
+      //   })
+      //   .catch(err => {
+      //     console.error(err);
+      //   });
     });
   }
 
@@ -317,24 +322,24 @@ const noteful = (function () {
         store.currentQuery.tagId = null;
       }
 
-      //TODO; loop over tags, if not a match, then clear
       store.currentNote = {};
-
-      api.remove(`/api/tags/${tagId}`)
-        .then(() => {
-          return api.search('/api/tags');
-        })
-        .then(response => {
-          store.tags = response;
-          return api.search('/api/notes', store.currentQuery);
-        })
-        .then(response => {
-          store.notes = response;
-          render();
-        });
+      
+      console.log('Delete a tag, coming soon...');
+      // api.remove(`/api/tags/${tagId}`)
+      //   .then(() => {
+      //     return api.search('/api/tags');
+      //   })
+      //   .then(response => {
+      //     store.tags = response;
+      //     return api.search('/api/notes', store.currentQuery);
+      //   })
+      //   .then(response => {
+      //     store.notes = response;
+      //     render();
+      //   });
     });
   }
-  
+
   function bindEventListeners() {
     handleNoteItemClick();
     handleNoteSearchSubmit();
