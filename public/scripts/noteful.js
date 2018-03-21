@@ -1,4 +1,4 @@
-/* global $ store api moment*/
+/* global $ store api moment */
 'use strict';
 
 const noteful = (function () {
@@ -45,8 +45,6 @@ const noteful = (function () {
           </div>
       </li>`);
     return listItems.join('');
-
-    
   }
 
   function generateFolderList(list, currQuery) {
@@ -259,7 +257,7 @@ const noteful = (function () {
       if (folderId === store.currentNote.folderId) {
         store.currentNote = {};
       }
-      
+
       console.log('Delete a folder, coming soon...');
       api.remove(`/api/folders/${folderId}`)
         .then(() => {
@@ -323,7 +321,7 @@ const noteful = (function () {
       }
 
       store.currentNote = {};
-      
+
       console.log('Delete a tag, coming soon...');
       // api.remove(`/api/tags/${tagId}`)
       //   .then(() => {
