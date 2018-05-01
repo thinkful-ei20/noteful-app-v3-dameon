@@ -10,6 +10,34 @@ const notesRouter = require('./routes/notes');
 // Create an Express application
 const app = express();
 
+
+//Mongoose setup
+
+const mongoose = require('mongoose');
+const {DATABASE_URI} = require('./config');
+mongoose.Promise = global.Promise;
+mongoose.connect(DATABASE_URI);
+let Note = require('./models/note');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Log all requests. Skip logging during
 app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {
   skip: () => process.env.NODE_ENV === 'test'
