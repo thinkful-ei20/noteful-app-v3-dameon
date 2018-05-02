@@ -10,9 +10,20 @@ let noteSchema =  mongoose.Schema({
     required:true
   },
   content:String,
-  created: Date
-
+  createdAt: Date,
+  updatedAt: Date
 });
+
+noteSchema.set('toObject', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  }
+});
+
+
+
 
 const Note = mongoose.model('Note',noteSchema);
 
