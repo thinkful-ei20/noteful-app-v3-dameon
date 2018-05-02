@@ -1,7 +1,7 @@
 language: node_js
 node_js: node
-# env:
-#   - NODE_ENV=test
+env:
+  - NODE_ENV=test
 services:
   - mongodb
  deploy:
@@ -13,4 +13,4 @@ services:
    on:
      repo:thinkful-ei20/noteful-app-v3-dameon
 
-    
+       
