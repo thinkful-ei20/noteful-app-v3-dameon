@@ -2,5 +2,12 @@ language: node_js
 node_js: node
 services:
 - mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: f93457e6-edf3-4a90-bad0-2c2d16cef832
+  app: noteful-app-v3-dameon
+  on:
+    repo: thinkful-ei20/noteful-app-v3-dameon
 
        
