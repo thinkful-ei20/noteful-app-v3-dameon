@@ -14,7 +14,7 @@ chai.use(chaiHttp);
 describe('Noteful api resources',function(){
   before(function () {
     return mongoose.connect(TEST_MONGODB_URI);
-  });
+  }); 
     
   beforeEach(function () {
     return Note.insertMany(seedNotes)
