@@ -8,7 +8,8 @@ services:
 #   provider: heroku
 #   api_key:
 #     secure: [YOUR-API-KEY]
-#   app: [something goes here]
+  # app:noteful-v3-dameon
+
 #   on:
 #     repo: [YOUR-APP-REPO]
- 
+    
