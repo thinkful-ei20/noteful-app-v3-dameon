@@ -14,7 +14,7 @@ const app = express();
 //Mongoose setup
 
 
-const {DATABASE_URI} = require('./config');
+
 mongoose.Promise = global.Promise;
 //mongoose.connect(DATABASE_URI);
 let Note = require('./models/note');
@@ -72,22 +72,24 @@ app.use(function (err, req, res, next) {
 
 
 
-
+if (require.main === module){
 //mongo connect
-mongoose.connect(MONGODB_URI)
-  .then(instance => {
-    const conn = instance.connections[0];
-    console.info(`Connected to: mongodb://${conn.host}:${conn.port}/${conn.name}`);
-  })
-  .catch(err => {
-    console.error(`ERROR: ${err.message}`);
-    console.error('\n === Did you remember to start `mongod`? === \n');
+  mongoose.connect(MONGODB_URI)
+    .then(instance => {
+      const conn = instance.connections[0];
+      console.info(`Connected to: mongodb://${conn.host}:${conn.port}/${conn.name}`);
+    })
+    .catch(err => {
+      console.error(`ERROR: ${err.message}`);
+      console.error('\n === Did you remember to start `mongod`? === \n');
+      console.error(err);
+    });
+
+  app.listen(PORT, function () {
+    console.info(`Server listening on ${this.address().port}`);
+  }).on('error', err => {
     console.error(err);
   });
+}
 
-app.listen(PORT, function () {
-  console.info(`Server listening on ${this.address().port}`);
-}).on('error', err => {
-  console.error(err);
-});
-
+module.exports = app;

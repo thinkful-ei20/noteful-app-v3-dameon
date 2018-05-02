@@ -48,7 +48,7 @@ router.post('/notes', (req, res, next) => {
   };
   return Note.create(newNote)
     .then((results) => {
-      res.status(201).json(results);
+      res.location(`${req.originalUrl}/${res.id}`).status(201).json(results);
     })
     .catch(err=>next(err));
 });
@@ -63,7 +63,7 @@ router.put('/notes/:id', (req, res, next) => {
   if(req.body.content){upObj.content = req.body.content;}
   return Note.findByIdAndUpdate(id,{$set:upObj},{upsert:true, new:true})
     .then(results=>{
-      res.status(204).json(results);
+      res.status(200).json(results);
     }).catch(err => next(err));
 });
 

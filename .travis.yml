@@ -8,6 +8,7 @@ env:
 #   provider: heroku
 #   api_key:
 #     secure: [YOUR-API-KEY]
-#   app: [YOUR-APP-NAME]
+#   app: [something goes here]
 #   on:
 #     repo: [YOUR-APP-REPO]
+ 
