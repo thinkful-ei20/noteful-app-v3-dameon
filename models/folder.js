@@ -10,13 +10,7 @@ let folderSchema = mongoose.Schema({
     updatedAt:Date
   }
 });
-folderSchema.set('toObject', {
-  transform: function (doc, ret) {
-    ret.id = ret._id;
-    delete ret._id;
-    delete ret.__v;
-  }
-});
+
 
 const Folder = mongoose.model('Folder',folderSchema);
 
