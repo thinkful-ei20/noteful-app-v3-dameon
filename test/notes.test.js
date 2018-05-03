@@ -50,7 +50,7 @@ describe('Noteful api resources',function(){
           expect(res).to.have.header('location');
           expect(res).to.be.json;
           expect(body).to.be.a('object');
-          expect(body).to.include.keys('id', 'title', 'content');
+          expect(body).to.include.keys('id', 'title', 'content','folderId');
           // 2) **then** call the database
           return Note.findById(body.id);
         })
