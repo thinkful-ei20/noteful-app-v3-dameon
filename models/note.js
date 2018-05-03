@@ -10,8 +10,13 @@ let noteSchema =  mongoose.Schema({
     required:true
   },
   content:String,
-  createdAt: Date,
-  updatedAt: Date
+  timestamps : {
+    createdAt: Date,
+    updatedAt: Date
+  },
+  folderId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Folder' }
 });
 
 noteSchema.set('toObject', {

@@ -114,9 +114,9 @@ const noteful = (function () {
   function handleNoteItemClick() {
     $('.js-notes-list').on('click', '.js-note-link', event => {
       event.preventDefault();
-
+      
       const noteId = getNoteIdFromElement(event.currentTarget);
-
+      console.log(noteId);
       api.details(`/api/notes/${noteId}`)
         .then((response) => {
           store.currentNote = response;
