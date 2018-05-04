@@ -9,12 +9,14 @@ mongoose.Promise = global.Promise;
 /* ========== GET/READ ALL ITEM ========== */
 
 router.get('/notes', (req, res, next) => {
-  let searchTerm;
+  const { searchTerm, folderId } = req.query;
+  
   let filterArr = [];
   if (searchTerm) {
     const re = new RegExp(searchTerm, 'i');
     filterArr.push({content: {$regex:re }},{title : { $regex: re }});
   } 
+  if(folderId){filterArr.push({folderId});}
   return Note.find(searchTerm ?{$or :filterArr}:{})
     .sort('created')
     .then(results => {
@@ -41,11 +43,22 @@ router.get('/notes/:id', (req, res, next) => {
 
 /* ========== POST/CREATE AN ITEM ========== */
 router.post('/notes', (req, res, next) => {
-  let {title,content} = req.body;
-  let newNote={
-    title,
-    content
-  };
+  
+  let newNote={};
+  const fields = ['title', 'content', 'folderId'];
+  for (const field of fields) {
+    if (field in req.body) newNote[field] = req.body[field];
+  }
+  if (!newNote.title) {
+    const err = new Error('Missing `title` in request body');
+    err.status = 400;
+    return next(err);
+  }
+  if (newNote.folderId && !mongoose.Types.ObjectId(newNote.folderId)) {
+    const err = new Error('Invalid `folderId` in request body');
+    err.status = 400;
+    return next(err);
+  }
   return Note.create(newNote)
     .then((results) => {
       res.location(`${req.originalUrl}/${res.id}`).status(201).json(results);
@@ -53,24 +66,55 @@ router.post('/notes', (req, res, next) => {
     .catch(err=>next(err));
 });
 
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/notes/:id', (req, res, next) => {
-  let {id} = req.params;
-    
-    
-  let upObj = {};
-  if(req.body.title){upObj.title = req.body.title;}
-  if(req.body.content){upObj.content = req.body.content;}
-  return Note.findByIdAndUpdate(id,{$set:upObj},{upsert:true, new:true})
-    .then(results=>{
-      res.status(200).json(results);
-    }).catch(err => next(err));
+  const { id } = req.params;
+
+  const updateObj = {};
+  const updatableFields = ['title', 'content', 'folderId'];
+
+  for (const field of updatableFields) {
+    if (field in req.body) updateObj[field] = req.body[field];
+  }
+
+  if (updateObj.folderId && !mongoose.Types.ObjectId(newItem.folderId)) {
+    const err = new Error('Invalid `folderId` in request body');
+    err.status = 400;
+    return next(err);
+  }
+
+  Note.findByIdAndUpdate(id, { $set: updateObj }, { new: true })
+    .then(note => {
+      res.json(note);
+    })
+    .catch(next);
 });
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/notes/:id', (req, res) => {
   let {id} = req.params;
-  Note.deleteOne({_id:id})
+  
+
+  Note.findByIdAndRemove(id)
     .then(()=>{
       res.status(204).end();
     });

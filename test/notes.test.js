@@ -8,6 +8,8 @@ let mongoose = require('mongoose');
 let { TEST_MONGODB_URI} = require('../config');
 let Note = require('../models/note');
 let seedNotes =require('../db/seed/notes');
+let Folder = require('../models/folder');
+let seedFolders = require('../db/seed/folders');
 let expect = chai.expect;
 chai.use(chaiHttp);
 
@@ -18,7 +20,9 @@ describe('Noteful api resources',function(){
     
   beforeEach(function () {
     return Note.insertMany(seedNotes)
-      .then(() => Note.createIndexes());
+      .then(() => Note.createIndexes())
+      .then(()=>Folder.insertMany(seedFolders))
+      .then(()=>Folder.createIndexes());
   });
     
   afterEach(function () {
@@ -28,8 +32,6 @@ describe('Noteful api resources',function(){
   after(function () {
     return mongoose.disconnect();
   });
-
-
 
 
   describe('POST /api/notes', function () {
@@ -64,7 +66,7 @@ describe('Noteful api resources',function(){
 
   describe('PUT api/notes/:id',function(){
 
-    it ('should update a dnote at given id',function(){
+    it ('should update a note at given id',function(){
       const updateData = {
         title:'Something goes here',
         content:'There is stuff here'
@@ -72,12 +74,13 @@ describe('Noteful api resources',function(){
       return Note.findOne()
         .then(function(note){
           updateData.id = note.id;
+         
           return chai.request(app)
             .put(`/api/notes/${note.id}`)
             .send(updateData);
         }).then(function(res) {
           expect(res).to.have.status(200);
-
+        
           return Note.findById(updateData.id);
         })
         .then(function(note){
@@ -86,15 +89,6 @@ describe('Noteful api resources',function(){
         });
     });
   });
-  
-
-
-  
-
-
-
-
-
 
   describe('GET /api/notes/:id', function () {
     it('should return correct notes', function () {
@@ -141,23 +135,6 @@ describe('Noteful api resources',function(){
     });
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   describe('DELETE api/notes/:id', function(){
     it('should remove note from database',function(){
      
@@ -171,22 +148,13 @@ describe('Noteful api resources',function(){
         })
         .then(function(res) {
           expect(res).to.have.status(204);
+         
           return Note.findById(note.id);
         })
         .then(function(_note) {
+         
           expect(_note).to.be.null;
         });
-
-
-
-
-
-
-
     });
   });
-
-
-
-
 });

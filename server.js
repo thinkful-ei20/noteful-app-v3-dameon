@@ -51,7 +51,7 @@ app.use(express.json());
 
 // Mount router on "/api"
 app.use('/api', notesRouter);
-app.use('/api',folderRouter);
+app.use('/api/folders',folderRouter);
 
 // Catch-all 404
 app.use(function (req, res, next) {
