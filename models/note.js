@@ -16,7 +16,11 @@ let noteSchema =  mongoose.Schema({
   },
   folderId: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Folder' }
+    ref: 'Folder' },
+  tags: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tag'
+  }]
 });
 
 noteSchema.set('toObject', {

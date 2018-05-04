@@ -7,6 +7,7 @@ const { PORT,MONGODB_URI } = require('./config');
 
 const notesRouter = require('./routes/notes');
 const folderRouter = require('./routes/folder');
+const tagsRouter = require('./routes/tag');
 // Create an Express application
 const app = express();
 
@@ -18,23 +19,6 @@ const app = express();
 mongoose.Promise = global.Promise;
 //mongoose.connect(DATABASE_URI);
 let Note = require('./models/note');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -52,6 +36,7 @@ app.use(express.json());
 // Mount router on "/api"
 app.use('/api', notesRouter);
 app.use('/api/folders',folderRouter);
+app.use('/api/tag',tagsRouter);
 
 // Catch-all 404
 app.use(function (req, res, next) {

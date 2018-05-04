@@ -1,29 +1,16 @@
 
 'use strict';
 
-
-
-
-
-
 let app = require('../server');
 let chai =require('chai');
 let chaiHttp = require('chai-http');
 let mongoose = require('mongoose');
 let { TEST_MONGODB_URI} = require('../config');
 let Note = require('../models/note');
-
-
 let Folder = require('../models/folder');
 let seedFolders = require('../db/seed/folders');
-
 let expect = chai.expect;
 chai.use(chaiHttp);
-
-
-
-
-
 
 describe('noteful api resources',function(){
   
@@ -36,7 +23,7 @@ describe('noteful api resources',function(){
       return Folder.insertMany(seedFolders)
         .then(() => Folder.createIndexes());});
   
-     
+   
   });
     
   afterEach(function () {
@@ -161,16 +148,6 @@ describe('noteful api resources',function(){
         .then(function(_folder) {
           expect(_folder).to.be.null;
         });
-
-
     });
-
   });
-
-
-
 });
-
-
-
-

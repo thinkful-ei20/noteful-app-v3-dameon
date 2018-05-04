@@ -66,25 +66,6 @@ router.post('/notes', (req, res, next) => {
     .catch(err=>next(err));
 });
 
-
-  
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/notes/:id', (req, res, next) => {
   const { id } = req.params;

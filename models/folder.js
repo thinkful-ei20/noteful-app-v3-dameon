@@ -5,10 +5,12 @@ const mongoose = require('mongoose');
 let folderSchema = mongoose.Schema({
 
   name:String,
+
   timestamps:{
     createdAt:Date,
     updatedAt:Date
   }
+
 });
 
 
